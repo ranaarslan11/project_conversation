@@ -1,0 +1,26 @@
+<%= @project.name %> - <%= @project.status %>
+<p><%= @project.description %></p>
+
+<h3>Comments</h3>
+<% if user_signed_in? %>
+  <%= form_with(model: [@project, Comment.new]) do |f| %>
+    <%= f.text_area :content %>
+    <%= f.submit 'Add Comment' %>
+  <% end %>
+<% end %>
+
+<ul>
+  <% @project.comments.each do |comment| %>
+    <li><%= comment.content %> - <%= comment.user.email %></li>
+  <% end %>
+</ul>
+
+<h3>Change Status</h3>
+<% if user_signed_in? %>
+  <%= form_with(model: [@project, StatusChange.new]) do |f| %>
+    <%= f.select :new_status, ['Pending', 'In Progress', 'Completed', 'On Hold'] %>
+    <%= f.submit 'Update Status' %>
+  <% end %>
+<% end %>
+
+<%= link_to 'Back', projects_path %>
